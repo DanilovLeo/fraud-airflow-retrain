@@ -87,7 +87,7 @@ flowchart LR
 
 ## Запуск
 
-Нужны Docker и Docker Compose v2, свободные порты 8080, 8081, 5432, 9095, 2181.
+Нужны Docker и Docker Compose v2, свободные порты 8080, 8081, 5433 (Kafka и Zookeeper наружу не публикуются, конфликтов с другими проектами нет).
 
 ```bash
 git clone <URL этого репозитория>
@@ -119,7 +119,7 @@ docker compose logs -f fraud_detector           # «Prediction complete ... mode
 |---|---|
 | Airflow UI | http://localhost:8081, логин `admin`, пароль `admin` |
 | Kafka UI | http://localhost:8080 |
-| PostgreSQL | `localhost:5432`, база `fraud_db`, `fraud_user` / `fraud_pass` |
+| PostgreSQL | `localhost:5433`, база `fraud_db`, `fraud_user` / `fraud_pass` |
 
 Остановка: `docker compose down`. Полная очистка (витрина, модели, состояние Airflow): `docker compose down -v`.
 
@@ -279,5 +279,5 @@ docker compose exec fraud_detector sh -c 'ls /models/*.metrics.json'
 ## Типичные проблемы
 
 * `model_bootstrap`/`data_loader` падают с `FileNotFoundError` — неверный `TRAIN_DATA_CSV` в `.env`, нужен абсолютный путь.
-* Порт занят — освободите 8080/8081/5432/9095 или поменяйте проброс в `docker-compose.yaml`.
+* Порт занят — освободите 8080/8081/5433 или поменяйте проброс в `docker-compose.yaml`.
 * DAG не видно сразу — Airflow сканирует папку раз в 30 с, подождите минуту после старта.
